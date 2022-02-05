@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{87E527AA-C69E-4D8C-AD6C-B33A4FAD68B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mm0205.ImageVectorization", "projects\Mm0205.ImageVectorization\Mm0205.ImageVectorization.csproj", "{84841D28-272D-49EB-9266-98DCE62B8ABE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mm0205.ImageVectorization.Test", "projects\Mm0205.ImageVectorization.Test\Mm0205.ImageVectorization.Test.csproj", "{15BB574B-7D6D-446F-80A4-AB8F149DA595}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{C8DA92C9-7834-455B-8BEC-11A75565463C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84841D28-272D-49EB-9266-98DCE62B8ABE} = {87E527AA-C69E-4D8C-AD6C-B33A4FAD68B8}
+		{15BB574B-7D6D-446F-80A4-AB8F149DA595} = {87E527AA-C69E-4D8C-AD6C-B33A4FAD68B8}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84841D28-272D-49EB-9266-98DCE62B8ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84841D28-272D-49EB-9266-98DCE62B8ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84841D28-272D-49EB-9266-98DCE62B8ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84841D28-272D-49EB-9266-98DCE62B8ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15BB574B-7D6D-446F-80A4-AB8F149DA595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15BB574B-7D6D-446F-80A4-AB8F149DA595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15BB574B-7D6D-446F-80A4-AB8F149DA595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15BB574B-7D6D-446F-80A4-AB8F149DA595}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
