@@ -1,0 +1,235 @@
+﻿<Window
+    x:Class="Mm0205.ImageVectorization.Demo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mm0205.ImageVectorization.Demo"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="using:System"
+    mc:Ignorable="d"
+    x:Name="MyWindow">
+
+    <ScrollViewer HorizontalScrollMode="Auto" VerticalScrollMode="Auto">
+
+        <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="フォント"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"></TextBlock>
+                            <ComboBox x:Name="FontComboBox"
+                              Margin="5, 0"
+                              VerticalAlignment="Center"
+                              ItemsSource="{x:Bind Fonts}"
+                              MinWidth="200"
+                              SelectedItem="{x:Bind SelectedFont, Mode=TwoWay}"
+                              SelectedIndex="{x:Bind SelectedFontIndex, Mode=TwoWay}"
+                              Loaded="FontComboBox_OnLoaded"
+                              SelectionChanged="FontComboBox_OnSelectionChanged"></ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ベクトル化する文字列"
+                               Margin="5, 0"
+                               VerticalAlignment="Center"></TextBlock>
+                            <TextBox MinWidth="200"
+                                     MaxWidth="500"
+                             x:Name="TextBoxSampleText"
+                             Text="{x:Bind SampleText, Mode=TwoWay}"
+                             Margin="5, 0"
+                             VerticalAlignment="Center"></TextBox>
+                        </StackPanel>
+                        <Button x:Name="ButtonExecute" 
+                        Content="ベクトル化実行" 
+                        Margin="15"
+                        Padding="15"
+                        VerticalAlignment="Center"
+                        Click="ButtonExecute_OnClick"></Button>
+
+                        <ProgressRing x:Name="MyProgressRing" IsActive="False"></ProgressRing>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                            Margin="10">
+                        <TextBlock Text="フォント二値化の閾値"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"></TextBlock>
+                        <Slider Value="128"
+                            Width="140"
+                            Maximum="255"
+                            Minimum="0"
+                            Margin="5, 0"
+                            StepFrequency="1"></Slider>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                            Margin="10">
+                        <TextBlock Text="直線近似の閾値"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"></TextBlock>
+                        <NumberBox Value="{x:Bind LineFitThreshold, Mode=TwoWay}"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"
+                               Width="200"
+                               Minimum="0.01"
+                               Maximum="5"
+                               SmallChange="0.01"
+                               LargeChange="0.1"
+                               SpinButtonPlacementMode="Compact"
+                               ></NumberBox>
+
+                        <CheckBox Content="直線近似しない"
+                              IsChecked="{x:Bind DisableLintFit, Mode=TwoWay}"
+                              VerticalAlignment="Center"></CheckBox>
+
+                        <TextBlock Text="2次ベジェ近似の閾値"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"></TextBlock>
+                        <NumberBox Width="200"
+                               VerticalAlignment="Center" 
+                               Margin="5, 0"
+                               Value="{x:Bind CurveFitThreshold, Mode=TwoWay}"
+                               Minimum="0.01"
+                               Maximum="5"
+                               SmallChange="0.01"
+                               LargeChange="0.1"
+                               SpinButtonPlacementMode="Compact"></NumberBox>
+
+                    </StackPanel>
+
+
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="ButtonOpenImageFolder"
+                                Margin="10,0"
+                                    Content="画像フォルダを開く"></Button>
+
+                        <ScrollViewer Grid.Column="1" 
+                                      HorizontalScrollMode="Enabled" 
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollMode="Auto">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <CheckBox Content="グリッドを表示"
+                                              Margin="5"
+                                              Grid.Row="0"
+                                              IsChecked="{x:Bind ShouldShowGrid, Mode=TwoWay}"></CheckBox>
+                                    <TextBlock Text="グリッドの色" 
+                                               Margin="5"
+                                               Grid.Row="1"></TextBlock>
+                                    <ColorPicker Grid.Row="2"
+                                                 Margin="5"
+                                                 Color="{x:Bind GridColor, Mode=TwoWay}"
+                                                 IsAlphaEnabled="True"></ColorPicker>
+                                </Grid>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <CheckBox Content="ビットマップを表示"
+                                              Grid.Row="0"
+                                              Margin="5"
+                                              IsChecked="{x:Bind ShouldShowBitmap, Mode=TwoWay}"></CheckBox>
+                                    <TextBlock Text="ビットマップの色"
+                                               Margin="5"
+                                               Grid.Row="1"></TextBlock>
+                                    <ColorPicker Color="{x:Bind BitmapColor, Mode=TwoWay}"
+                                                 Grid.Row="2"
+                                                 Margin="5"
+                                                 IsAlphaEnabled="True"></ColorPicker>
+                                </Grid>
+
+                                <Grid Grid.Column="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <CheckBox Content="中間線を表示"
+                                              Grid.Row="0"
+                                              Margin="5"
+                                              IsChecked="{x:Bind ShouldShowInterpolation, Mode=TwoWay}"></CheckBox>
+                                    <TextBlock Text="中間線の色"
+                                               Grid.Row="1"
+                                               Margin="5"></TextBlock>
+                                    <ColorPicker Color="{x:Bind InterpolationColor, Mode=TwoWay}"
+                                                 Grid.Row="2"
+                                                 Margin="5"
+                                                 IsAlphaEnabled="True"></ColorPicker>
+                                </Grid>
+
+                                <Grid Grid.Column="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <CheckBox Content="結果ベクトルを表示"
+                                              Grid.Row="0"
+                                              Margin="5"
+                                              IsChecked="{x:Bind ShouldShowVector, Mode=TwoWay}"></CheckBox>
+                                    <TextBlock Text="結果ベクトルの色"
+                                               Margin="5"
+                                               Grid.Row="1"></TextBlock>
+                                    <ColorPicker Color="{x:Bind VectorColor, Mode=TwoWay}"
+                                                 Grid.Row="2"
+                                                 Margin="5"
+                                                 IsAlphaEnabled="True"></ColorPicker>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+
+                </StackPanel>
+            </Grid>
+            <GridView Grid.Row="1"
+                  x:Name="ContentGridView"
+                  ItemsSource="{x:Bind Images}"
+                  IsItemClickEnabled="False"
+                  CanDragItems="False"
+                  AllowDrop="False"
+                  CanReorderItems="False"
+                  SelectionMode="Single"
+                  FlowDirection="LeftToRight">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="system:String">
+                        <Image Stretch="UniformToFill"
+                           Source ="{x:Bind}"
+                           Width="130"
+                           Height="130"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+        </Grid>
+    </ScrollViewer>
+</Window>

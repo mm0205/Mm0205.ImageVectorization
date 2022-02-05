@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Mm0205.ImageVectorization.Demo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Mm0205.ImageVectorization.Demo (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
