@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
@@ -83,6 +84,10 @@ namespace Mm0205.ImageVectorization.Demo
             MyWindow.Title = "フォントをベクトル化するデモ";
         }
 
+        private string CreateImagesFolderPath() => Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Mm0205.ImageVectorization.Demo", "images");
+
         private async Task CreateVectorsAsync(string selectedFont, string sampleText)
         {
             Images.Clear();
@@ -90,7 +95,7 @@ namespace Mm0205.ImageVectorization.Demo
             var typefaceIndex = SelectedFontIndex;
 
             var root = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var imagesFolder = Path.Combine(root, "Mm0205.ImageVectorization.Demo", "images");
+            var imagesFolder = CreateImagesFolderPath();
             if (!Directory.Exists(imagesFolder))
             {
                 Directory.CreateDirectory(imagesFolder);
@@ -532,6 +537,11 @@ namespace Mm0205.ImageVectorization.Demo
             };
 
             await errorDialog.ShowAsync();
+        }
+
+        private void ButtonOpenImageFolder_OnClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start("explorer.exe", CreateImagesFolderPath());
         }
     }
 }
